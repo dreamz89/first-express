@@ -1,0 +1,27 @@
+<!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Hello, {{user.name}}</h1>
+        <p>Your email is {{user.email}}</p>
+          {{#if user.isAdmin}}
+          <p><a class="btn btn-primary btn-lg" href="#" role="button">Admin Login</a></p>
+          {{/if}}
+
+          {{#unless user.isAdmin}}
+          <p><a class="btn btn-primary btn-lg" href="#" role="button">User Login</a></p>
+          {{/unless}}
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Create new blogpost</h2>
+        {{> form}} <!--the lack of space before > is important-->
+      <ul>
+        {{#each blogs as |blog|}}
+        <li>
+          <h3>{{blog.title}}</h3>
+          <p>{{blog.content}}</p>
+        </li>
+        {{/each}}
+      </ul>
+    </div>

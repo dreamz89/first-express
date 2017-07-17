@@ -1,28 +1,49 @@
 const express = require('express')
+const exphbs = require('express-handlebars')
 const app = express()
 
-// all request will have to go thru this middleware
+// public is referring to directory in the root folder
 app.use(express.static('public'))
-// app.use(function (req, res, next) {
-//   console.log('first middleware')
-//   next() // important to continue to next function
-// })
-//
-// app.use(function (req, res, next) {
-//   console.log('second middleware')
-// })
+
+// setting dynamic view folders
+app.engine('handlebars', exphbs({
+  // handlebars configurations
+  defaultLayout: 'main',
+  partialsDir: 'views/partials'
+}))
+app.set('view engine', 'handlebars')
 
 // listening for request
 app.get('/', function (req, res) {
-  res.sendFile('index.html')
+  // this will be your search through db
+  var user = {
+    name: 'Joc',
+    email: 'joc@ga.co',
+    isAdmin: false
+  }
+
+  var blogs = [{
+    title: 'my blogpost',
+    content: 'my first blog post'
+  },
+    {
+      title: 'second blogpost',
+      content: 'my second blog post'
+    }
+  ]
+
+  res.render('index', {
+    user,
+    blogs
+  })
 })
 
-app.get('/about/:name', function (req, res) {
-  res.send(req.params)
+app.get('/about', function (req, res) {
+  res.render('about')
 })
 
 app.get('/faq', function (req, res) {
-  res.send('faq page')
+  res.render('faq')
 })
 
 app.post('/')
@@ -30,5 +51,5 @@ app.post('/')
 var port = process.env.PORT || 3000
 
 app.listen(port, function () {
-  console.log('express is running on' + port)
+  console.log('express is running on port' + port)
 })
